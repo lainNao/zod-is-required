@@ -5,9 +5,9 @@ Describe the target using dot-separated paths (with array wildcards or indices) 
 
 ```ts
 import { z } from "zod";
-import { isRequiredField } from "lainnao/zod-is-required";
+import { isRequiredField } from "@lainnao/zod-is-required";
 
-const Schema = z.object({
+const schema = z.object({
   string: z.string(),
   stringMin1: z.string().min(1),
   stringOptional: z.string().optional(),
@@ -15,11 +15,11 @@ const Schema = z.object({
   numberOptional: z.number().optional(),
 });
 
-isRequiredField(Schema, "string"); // false
-isRequiredField(Schema, "stringMin1"); // true
-isRequiredField(Schema, "stringOptional"); // false
-isRequiredField(Schema, "number"); // true
-isRequiredField(Schema, "numberOptional"); // false
+isRequiredField(schema, "string"); // false
+isRequiredField(schema, "stringMin1"); // true
+isRequiredField(schema, "stringOptional"); // false
+isRequiredField(schema, "number"); // true
+isRequiredField(schema, "numberOptional"); // false
 ```
 
 Also works with other primitives, nested objects, arrays, tuples, and records. Please see the [tests](https://github.com/lainNao/zod-is-required/blob/main/tests/isRequiredField.test.ts) for more examples.
