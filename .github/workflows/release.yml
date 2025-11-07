@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      packages: write
       id-token: write # for OIDC
     steps:
       - uses: actions/checkout@v4
@@ -17,6 +18,8 @@ jobs:
         with:
           node-version: 24.x
           cache: npm
+          registry-url: https://npm.pkg.github.com
+          scope: "@lainnao"
       - run: npm ci
       - run: npm run lint
       - run: npm test
@@ -60,9 +63,6 @@ jobs:
           body: "Automated release for ${{ steps.pkg.outputs.tag }}."
       - name: Publish to npm
         if: steps.tag_check.outputs.exists == 'false'
-        run: npm publish --provenance --access public
-
-      - name: Publish to GitHub Packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm publish --access public --registry=https://npm.pkg.github.com --ignore-scripts
+        run: npm publish --provenance --access public
