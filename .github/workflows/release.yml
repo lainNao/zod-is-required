@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - name: Read package version
+        id: pkg
+        run: echo "tag=v$(node -p \"require('./package.json').version\")" >> "$GITHUB_OUTPUT"
+      - name: Check existing tag
+        id: tag_check
+        uses: actions/github-script@v7
+        env:
+          TAG_NAME: ${{ steps.pkg.outputs.tag }}
+        with:
+          script: |
+            const tag = process.env.TAG_NAME;
+            try {
+              await github.rest.git.getRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `tags/${tag}`
+              });
+              core.setOutput("exists", "true");
+            } catch (error) {
+              if (error.status === 404) {
+                core.setOutput("exists", "false");
+              } else {
+                throw error;
+              }
+            }
+      - name: Create GitHub release
+        if: steps.tag_check.outputs.exists == 'false'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.pkg.outputs.tag }}
+          release_name: ${{ steps.pkg.outputs.tag }}
+          body: "Automated release for ${{ steps.pkg.outputs.tag }}."
+      - name: Publish to npm
+        if: steps.tag_check.outputs.exists == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public

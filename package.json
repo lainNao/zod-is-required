@@ -1,0 +1,51 @@
+{
+  "name": "lainnao/zod-is-required",
+  "version": "0.1.0",
+  "description": "Utility that reports whether a dot-delimited path in a Zod schema is required.",
+  "license": "MIT",
+  "author": "lainNao",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format esm,cjs",
+    "clean": "rm -rf dist",
+    "lint": "biome check .",
+    "format": "biome format . --write",
+    "test": "vitest run",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "zod",
+    "schema",
+    "validation",
+    "required"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "zod": "^4"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.0",
+    "zod": "^4",
+    "tsup": "8.5.0",
+    "typescript": "5.9.3",
+    "vitest": "4.0.8",
+    "@biomejs/biome": "2.3.4"
+  }
+}

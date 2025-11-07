@@ -1,0 +1,37 @@
+name: Test
+
+on:
+  push:
+    paths:
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.mts"
+      - "**/*.cts"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tests/**/*"
+      - ".github/workflows/test.yml"
+  pull_request:
+    paths:
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.mts"
+      - "**/*.cts"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tests/**/*"
+      - ".github/workflows/test.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm test
