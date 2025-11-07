@@ -18,7 +18,7 @@ isRequiredField(Schema, "stringMin1"); // true
 isRequiredField(Schema, "stringOptional"); // false
 ```
 
-Also works with other primitives, nested objects, arrays, tuples, and records. Please see the tests for more examples.
+Also works with other primitives, nested objects, arrays, tuples, and records. Please see the [tests](https://github.com/lainNao/zod-is-required/blob/main/tests/isRequiredField.test.ts) for more examples.
 
 ## Installation
 
