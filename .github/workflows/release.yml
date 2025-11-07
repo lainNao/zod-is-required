@@ -61,3 +61,8 @@ jobs:
       - name: Publish to npm
         if: steps.tag_check.outputs.exists == 'false'
         run: npm publish --provenance --access public
+
+      - name: Publish to GitHub Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --access public --registry=https://npm.pkg.github.com --ignore-scripts
