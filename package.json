@@ -1,6 +1,6 @@
 {
   "name": "@lainnao/zod-is-required",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Utility that reports whether a dot-delimited path in a Zod schema is required.",
   "license": "MIT",
   "author": "lainNao",
