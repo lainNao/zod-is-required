@@ -11,11 +11,15 @@ const Schema = z.object({
   string: z.string(),
   stringMin1: z.string().min(1),
   stringOptional: z.string().optional(),
+  number: z.number(),
+  numberOptional: z.number().optional(),
 });
 
-isRequiredField(Schema, "string"); // true
+isRequiredField(Schema, "string"); // false
 isRequiredField(Schema, "stringMin1"); // true
 isRequiredField(Schema, "stringOptional"); // false
+isRequiredField(Schema, "number"); // false
+isRequiredField(Schema, "numberOptional"); // false
 ```
 
 Also works with other primitives, nested objects, arrays, tuples, and records. Please see the [tests](https://github.com/lainNao/zod-is-required/blob/main/tests/isRequiredField.test.ts) for more examples.
