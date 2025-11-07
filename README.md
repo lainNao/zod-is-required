@@ -18,7 +18,7 @@ const Schema = z.object({
 isRequiredField(Schema, "string"); // false
 isRequiredField(Schema, "stringMin1"); // true
 isRequiredField(Schema, "stringOptional"); // false
-isRequiredField(Schema, "number"); // false
+isRequiredField(Schema, "number"); // true
 isRequiredField(Schema, "numberOptional"); // false
 ```
 
