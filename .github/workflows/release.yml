@@ -10,11 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write # for OIDC
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 24.x
           cache: npm
       - run: npm ci
       - run: npm run lint
@@ -59,6 +60,4 @@ jobs:
           body: "Automated release for ${{ steps.pkg.outputs.tag }}."
       - name: Publish to npm
         if: steps.tag_check.outputs.exists == 'false'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
+        run: npm publish --provenance --access public
