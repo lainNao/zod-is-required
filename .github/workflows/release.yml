@@ -18,8 +18,6 @@ jobs:
         with:
           node-version: 24.x
           cache: npm
-          registry-url: https://npm.pkg.github.com
-          scope: "@lainnao"
       - run: npm ci
       - run: npm run lint
       - run: npm test
@@ -61,8 +59,26 @@ jobs:
           tag_name: ${{ steps.pkg.outputs.tag }}
           release_name: ${{ steps.pkg.outputs.tag }}
           body: "Automated release for ${{ steps.pkg.outputs.tag }}."
-      - name: Publish to npm
+
+      - name: Configure npmjs registry
         if: steps.tag_check.outputs.exists == 'false'
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+          registry-url: https://registry.npmjs.org
+      - name: Publish to npm (npmjs.org)
+        if: steps.tag_check.outputs.exists == 'false'
+        run: npm publish --provenance --access public
+
+      # GitHub Packages へ公開
+      - name: Configure GitHub Packages registry
+        if: steps.tag_check.outputs.exists == 'false'
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+          registry-url: https://npm.pkg.github.com
+          scope: "@lainnao"
+      - name: Publish to GitHub Packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm publish --provenance --access public
